@@ -4,7 +4,7 @@
   "description": "基于koa框架的电影预告网站",
   "main": "server/index.js",
   "scripts": {
-    "start": "node server/index.js",
+    "start": "nodemon server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,7 +24,9 @@
   "dependencies": {
     "ejs": "^2.5.7",
     "koa": "^2.5.0",
+    "koa-convert": "^1.2.0",
     "koa-views": "^6.1.4",
+    "koa2-cors": "^2.0.5",
     "pug": "^2.0.0"
   }
 }

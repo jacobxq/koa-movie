@@ -4,10 +4,92 @@ block title
   title Koa 电影
 
 block content
-  .container
-      .row
-        .col-md-8
-          h1 Hi #{name}
-          p #{des}
-        .col-md-4
-          h3 测试模版引擎中间件
+  include ./includes/header
+
+  
+  .container-fluid
+    .row
+      .col-12.col-md-3.col-xl-2.sidebar
+        .cat-links
+          .sidebar-item.active
+            a.sidebar-link(href='/') Links
+            ul.nav.sidebar-inner
+              li.sidebar-inner-active
+                a(href='/') Link1
+              li.active.sidebar-inner-active
+                a(href='/') Link2
+      .col-12.col-md-9.col-xl-9.py-md-3.pl-md-5.content
+        .row
+          .col-md-6
+            .card
+              img.card-img-top(src='https://img3.doubanio.com/view/photo/l/public/p2493318100.webp' data-video="http://vt1.doubanio.com/201803090959/8136080f12b911faf3e4df8b35eada9e/view/movie/M/302260827.mp4")
+              .card-body
+                h4.card-title 这是电影标题
+                p.card-desc 这是电影描述
+              .card-footer
+                small.text-muted 1天前更新
+          .col-md-6
+            .card
+              img.card-img-top(src='https://img3.doubanio.com/view/photo/l/public/p2493318100.webp' data-video="http://vt1.doubanio.com/201803090959/8136080f12b911faf3e4df8b35eada9e/view/movie/M/302260827.mp4")
+              .card-body
+                h4.card-title 这是电影标题
+                p.card-desc 这是电影描述
+              .card-footer
+                small.text-muted 1天前更新
+        .row
+          .col-md-6
+            .card
+              img.card-img-top(src='https://img3.doubanio.com/view/photo/l/public/p2493318100.webp' data-video="http://vt1.doubanio.com/201803090959/8136080f12b911faf3e4df8b35eada9e/view/movie/M/302260827.mp4")
+              .card-body
+                h4.card-title 这是电影标题
+                p.card-desc 这是电影描述
+              .card-footer
+                small.text-muted 1天前更新
+          .col-md-6
+            .card
+              img.card-img-top(src='https://img3.doubanio.com/view/photo/l/public/p2493318100.webp' data-video="http://vt1.doubanio.com/201803090959/8136080f12b911faf3e4df8b35eada9e/view/movie/M/302260827.mp4")
+              .card-body
+                h4.card-title 这是电影标题
+                p.card-desc 这是电影描述
+              .card-footer
+                small.text-muted 1天前更新
+  #myModal.modal.fade.bd-example-modal-lg(tabindex='-1', role="dialog",
+  aria-babelledby="myLargeModalLabel", aria-hidden="true")        
+    .modal-dialog.modal-lg
+      #videoModal.modal-content
+  include ./includes/script
+  script.
+    var player = null
+
+    $(document).ready(function () {
+      $('#myModal').on('hidden.bs.modal', function (e) {
+        if (player && player.pause) player.pause()
+      })
+
+      $('.card-img-top').click(function (e) {
+        var video = $(this).data('video')
+        var image = $(this).attr('src')
+
+        $('#myModal').modal('show')
+        console.log(document.getElementById('videoModal'))
+        if (!player) {
+          player = new DPlayer({
+            container: document.getElementById('videoModal'),
+            screenshot: true,
+            video: {
+              url: video,
+              pic: image,
+              thumbnails: image
+            }
+          })
+        } else {
+          if (player.video.currentSrc !== video) {
+            player.switchVideo({
+              url: video,
+              pic: image,
+              type: 'auto'
+            })
+          }
+        }
+      })
+    })

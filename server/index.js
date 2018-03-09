@@ -1,8 +1,23 @@
 const Koa = require('koa')
 const views = require('koa-views')
-const app = new Koa()
+const cors = require('koa2-cors')
+// const convert = require('koa-convert')
 const {resolve} = require('path')
 
+const app = new Koa()
+// console.log(cors())
+// app.use(cors({
+//   origin: '*',
+//   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+//   maxAge: 5,
+//   credentials: true,
+//   allowMethods: ['GET', 'POST', 'DELETE'],
+//   allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+// }))
+app.use(async (ctx, next) => {
+  ctx.set('Access-Control-Allow-Origin', '*');
+  await next();
+});
 app.use(views(resolve(__dirname, './views'), {
   extension: 'pug'
 }))
