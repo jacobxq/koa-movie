@@ -19,12 +19,12 @@ const sleep = time => new Promise(resolve => {
     waitUntil: 'networkidle2'
   })
 
-  await sleep(3000)
+  await sleep(2000)
 
   await page.waitForSelector('.more')
 
   for (let i = 0; i <= 2; i++) {
-    await sleep(3000)
+    await sleep(2000)
     await page.click('.more')
   }
 
@@ -55,5 +55,8 @@ const sleep = time => new Promise(resolve => {
 
   browser.close()
 
-  console.log(result)
+  // process.send('aa')
+  process.send({result})
+  await sleep(100)
+  process.exit(0)
 })()
