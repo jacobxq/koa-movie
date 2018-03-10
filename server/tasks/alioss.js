@@ -3,13 +3,14 @@ var OSS = require('ali-oss')
 var nanoid = require('nanoid')
 var request = require('request')
 var fs = require('mz/fs')
+const config = require('../config')
 var {resolve} = require('path')
 
 var client = new OSS({
-  region: 'oss-cn-shenzhen',
-  accessKeyId: 'LTAIvRGJCodvP6Ze',
-  accessKeySecret: 'MD2rdG1cMwTK13jmxVYDIaAcDVcErx',
-  bucket: 'hzh0113'
+  region: config.region,
+  accessKeyId: config.accessKeyId,
+  accessKeySecret: config.accessKeySecret,
+  bucket: config.bucket
 })
 
 function downImg(url, key = '') {  
