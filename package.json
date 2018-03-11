@@ -30,6 +30,7 @@
     "glob": "^7.1.2",
     "koa": "^2.5.0",
     "koa-convert": "^1.2.0",
+    "koa-router": "^7.4.0",
     "koa-views": "^6.1.4",
     "koa2-cors": "^2.0.5",
     "mongoose": "^5.0.9",

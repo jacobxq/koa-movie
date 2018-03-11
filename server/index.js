@@ -2,6 +2,7 @@ const Koa = require('koa')
 const mongoose = require('mongoose')
 const views = require('koa-views')
 const cors = require('koa2-cors')
+const router = require('./routes')
 // const convert = require('koa-convert')
 const {resolve} = require('path')
 const {connect, initSchema} = require('./database/init')
@@ -16,6 +17,11 @@ const {connect, initSchema} = require('./database/init')
 
 
 const app = new Koa()
+
+app
+  .use(router.routes())
+  .use(router.allowedMethods())
+
 // console.log(cors())
 // app.use(cors({
 //   origin: '*',
