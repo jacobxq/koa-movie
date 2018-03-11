@@ -20,7 +20,7 @@ function downImg(url, key = '') {
     request  
       .get(opts)  
       .on('response', (response) => {  
-        console.log("img type:", response.headers['content-type'])  
+        console.log("type:", response.headers['content-type'])  
       })  
       .pipe(fs.createWriteStream(streamPath))
       .on("error", (e) => {  
@@ -63,7 +63,7 @@ co(function* () {
     if (movie.video && !movie.videoKey) {
       let poster = yield downImg(movie.poster, nanoid() + '.png')
       let cover = yield downImg(movie.cover, nanoid() + '.png')
-      let video = yield downImg(movie.video, resolve(__dirname, nanoid() + '.mp4'))
+      let video = yield downImg(movie.video, nanoid() + '.mp4')
       console.log('下载成功')
   
 
@@ -77,9 +77,20 @@ co(function* () {
       var coverOss = yield client.putStream(cover, stream, {contentLength: size})
       console.log('上传cover成功')
 
-      var stream = fs.createReadStream(resolve(__dirname, video))
-      var size = fs.statSync(resolve(__dirname, video)).size
-      var videoOss = yield client.putStream(video, stream, {contentLength: size})
+      // var stream = fs.createReadStream(resolve(__dirname, video))
+      // var size = fs.statSync(resolve(__dirname, video)).size
+      // var videoOss = yield client.putStream(video, stream, {contentLength: size})
+      var result = yield client.multipartUpload(video, resolve(__dirname, video), {
+        progress: function* (p) {
+          console.log('Progress: ' + p);
+        },
+        meta: {
+          year: 2017,
+          people: 'test'
+        }
+      });
+      // var head = yield client.head(video);
+      // console.log(head);
       console.log('上传video成功')
       
   
