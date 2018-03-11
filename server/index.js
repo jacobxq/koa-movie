@@ -1,8 +1,19 @@
 const Koa = require('koa')
+const mongoose = require('mongoose')
 const views = require('koa-views')
 const cors = require('koa2-cors')
 // const convert = require('koa-convert')
 const {resolve} = require('path')
+const {connect, initSchema} = require('./database/init')
+
+;(async () => {
+  const aa = await connect()
+  initSchema()
+
+  // require('./tasks/movie')
+  // require('./tasks/api')
+})()
+
 
 const app = new Koa()
 // console.log(cors())
