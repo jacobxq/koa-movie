@@ -6,7 +6,7 @@ const R = require('ramda')
 // const convert = require('koa-convert')
 const {join} = require('path')
 const {connect, initSchema} = require('./database/init')
-const MIDDLEWARES = ['router']
+const MIDDLEWARES = ['router', 'parcel']
 
 const useMiddlewares = (app) => {
   R.map(

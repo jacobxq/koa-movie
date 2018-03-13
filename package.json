@@ -4,7 +4,8 @@
   "description": "基于koa框架的电影预告网站",
   "main": "server/index.js",
   "scripts": {
-    "start": "nodemon server/index.js",
+    "start": "rm -rf dist && rm -rf .cache && NODE_ENV=development nodemon ./start.js",
+    "build": "rm -rf dist && parcel build src/index.html --no-cache -d dist --public-url /",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -40,11 +41,16 @@
     "pug": "^2.0.0",
     "puppeteer": "^1.1.1",
     "ramda": "^0.25.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "request-promise-native": "^1.0.5"
   },
   "devDependencies": {
+    "antd": "^3.3.0",
+    "autoprefixer": "^8.1.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.2",
     "babel-loader": "^7.1.2",
@@ -55,6 +61,10 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1"
+    "babel-preset-stage-0": "^6.24.1",
+    "cssnext": "^1.8.4",
+    "koa-static": "^4.0.2",
+    "node-sass": "^4.7.2",
+    "parcel-bundler": "^1.6.2"
   }
 }
