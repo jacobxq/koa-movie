@@ -42,7 +42,6 @@ const router = conf => (target, key, descriptor) => {
     target: target,
     ...conf
   }, target[key])
-  console.log(routerMap)
 }
 
 export const controller = path => target => (target.prototype[symbolPrefix] = path)

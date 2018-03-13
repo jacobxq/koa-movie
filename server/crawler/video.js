@@ -9,7 +9,6 @@ const sleep = time => new Promise(resolve => {
 
 process.on('message', async (movies) => {
   console.log('Start visit the target page')
-  console.log(movies)
 
   const browser = await puppeteer.launch({
     args: ['--no-sandbox'],
@@ -74,7 +73,7 @@ process.on('message', async (movies) => {
     process.send(data)
   }
   browser.close()
-  
+  console.log('关闭浏览器')
   await sleep(100)
   process.exit(0)
 })

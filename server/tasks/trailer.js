@@ -38,6 +38,7 @@ const Movie = mongoose.model('Movie')
     })
     
     if (data.video) {
+      console.log(data.video)
       movie.video = data.video
       movie.cover = data.cover
 
