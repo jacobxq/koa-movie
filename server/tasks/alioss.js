@@ -30,7 +30,7 @@ function downImg(url, key = '') {
       .on("finish", () => {  
         console.log('下载' + key + '成功')
         resolve(key)
-      })  
+      })
       // .on("close", () => {  
       //   console.log("close")
       // })  
@@ -77,37 +77,23 @@ co(function* () {
       var coverOss = yield client.putStream(cover, stream, {contentLength: size})
       console.log('上传cover成功')
 
-      // var stream = fs.createReadStream(resolve(__dirname, video))
-      // var size = fs.statSync(resolve(__dirname, video)).size
-      // var videoOss = yield client.putStream(video, stream, {contentLength: size})
       var result = yield client.multipartUpload(video, resolve(__dirname, video), {
         progress: function* (p) {
           console.log('Progress: ' + p);
-        },
-        meta: {
-          year: 2017,
-          people: 'test'
         }
       });
-      // var head = yield client.head(video);
-      // console.log(head);
       console.log('上传video成功')
-      
   
       yield fs.unlink(resolve(__dirname, poster))
       yield fs.unlink(resolve(__dirname, cover))
       yield fs.unlink(resolve(__dirname, video))
+      console.log('删除成功')
   
       movies[i].posterKey = poster
       movies[i].coverKey = cover
       movies[i].videoKey = video
-      console.log('删除成功')
     }
   }
 }).catch(function (err) {
   console.log(err)
 })
-
-
-
-

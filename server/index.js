@@ -2,25 +2,25 @@ const Koa = require('koa')
 const mongoose = require('mongoose')
 const views = require('koa-views')
 const cors = require('koa2-cors')
-const router = require('./routes')
+const R = require('ramda')
 // const convert = require('koa-convert')
-const {resolve} = require('path')
+const {join} = require('path')
 const {connect, initSchema} = require('./database/init')
+const MIDDLEWARES = ['router']
 
-;(async () => {
-  const aa = await connect()
-  initSchema()
+const useMiddlewares = (app) => {
+  R.map(
+    R.compose(
+      R.forEachObjIndexed(
+        initWith => initWith(app)
+      ),
+      require,
+      name => join(__dirname, `./middlewares/${name}`)
+    )
+  )(MIDDLEWARES)
+}
 
-  // require('./tasks/movie')
-  // require('./tasks/api')
-})()
 
-
-const app = new Koa()
-
-app
-  .use(router.routes())
-  .use(router.allowedMethods())
 
 // console.log(cors())
 // app.use(cors({
@@ -31,20 +31,17 @@ app
 //   allowMethods: ['GET', 'POST', 'DELETE'],
 //   allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
 // }))
-app.use(async (ctx, next) => {
-  ctx.set('Access-Control-Allow-Origin', '*');
-  await next();
-});
-app.use(views(resolve(__dirname, './views'), {
-  extension: 'pug'
-}))
 
-app.use(async (ctx, next) => {
-  await ctx.render('index', {
-    name: "Jacob",
-    des: '搞事情views，还有谁'
-  })
-})
+// app.use(views(resolve(__dirname, './views'), {
+//   extension: 'pug'
+// }))
+
+// app.use(async (ctx, next) => {
+//   await ctx.render('index', {
+//     name: "Jacob",
+//     des: '搞事情views，还有谁'
+//   })
+// })
 
 // app.use(async (ctx, next) => {
 //   ctx.type = 'text/html;charset=utf-8'
@@ -54,4 +51,19 @@ app.use(async (ctx, next) => {
 //   })
 // })
 
-app.listen(5566)
+;(async () => {
+  const aa = await connect()
+  initSchema()
+
+  // require('./tasks/movie')
+  // require('./tasks/api')
+
+  const app = new Koa()
+  app.use(async (ctx, next) => {
+    ctx.set('Access-Control-Allow-Origin', '*');
+    await next();
+  });
+  await useMiddlewares(app)
+
+  app.listen(5566)
+})()
