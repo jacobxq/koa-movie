@@ -19,7 +19,6 @@ export class Route {
     
     glob.sync(resolve(this.apiPath, './**/*.js')).forEach(require)
     for (let [conf, controller] of routerMap) {
-      console.log(conf, controller)
       const controllers = isArray(controller)
       const prefixPath = conf.target[symbolPrefix]
       if (prefixPath) prefixPath = normalizePath(prefixPath)
@@ -33,7 +32,6 @@ export class Route {
 }
 
 const normalizePath = path => {
-  console.log(typeof path)
   return path.startsWith('/') ? path : `/${path}`
 }
 
@@ -44,6 +42,7 @@ const router = conf => (target, key, descriptor) => {
     target: target,
     ...conf
   }, target[key])
+  console.log(routerMap)
 }
 
 export const controller = path => target => (target.prototype[symbolPrefix] = path)
