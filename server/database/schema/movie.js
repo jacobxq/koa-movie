@@ -20,7 +20,7 @@ const movieSchema = new Schema({
   poster: String,
   cover: String,
 
-  videKey: String,
+  videoKey: String,
   posterKey: String,
   coverKey: String,
 

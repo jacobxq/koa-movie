@@ -5,6 +5,8 @@ var request = require('request')
 var fs = require('mz/fs')
 const config = require('../config')
 var {resolve} = require('path')
+const mongoose = require('mongoose')
+const Movie = mongoose.model('Movie')
 
 var client = new OSS({
   region: config.region,
@@ -37,26 +39,18 @@ function downImg(url, key = '') {
   })  
 }
 
-let movies = [
-  { 
-    doubanId: 3445906,
-    title: '古墓丽影：源起之战 Tomb Raider',
-    rate: 8.7,
-    poster: 'https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2512717509.webp',
-    cover: 'https://img3.doubanio.com/img/trailer/medium/2514914002.jpg?1519792621',
-    video: 'http://vt1.doubanio.com/201803102157/8c1e56d4569f0e5d0723a2ace86c0fa2/view/movie/M/302270967.mp4'
-  },
-  {
-    doubanId: 20435622,
-    title: '环太平洋：雷霆再起 Pacific Rim: Uprising',
-    rate: 8.8,
-    poster: 'https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2512983475.webp',
-    cover: 'https://img3.doubanio.com/img/trailer/medium/2515687880.jpg?1520483945',
-    video: 'http://vt1.doubanio.com/201803102158/5e878e4dc49e4811d88c62a9891b7801/view/movie/M/302280308.mp4'
-  }
-]
+
 
 co(function* () {
+  let movies = yield Movie.find({
+    $or: [
+      {videoKey: {$exists: false}},
+      {videoKey: null},
+      {videoKey: ''}
+    ]
+  }).exec()
+  movies = [movies[0]]
+  console.log(movies)
 
   for (let i = 0; i < movies.length; i++) {
     let movie = movies[i]
@@ -65,7 +59,6 @@ co(function* () {
       let cover = yield downImg(movie.cover, nanoid() + '.png')
       let video = yield downImg(movie.video, nanoid() + '.mp4')
       console.log('下载成功')
-  
 
       var stream = fs.createReadStream(resolve(__dirname, poster))
       var size = fs.statSync(resolve(__dirname, poster)).size
@@ -92,6 +85,8 @@ co(function* () {
       movies[i].posterKey = poster
       movies[i].coverKey = cover
       movies[i].videoKey = video
+
+      yield movie.save()
     }
   }
 }).catch(function (err) {

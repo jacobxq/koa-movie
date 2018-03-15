@@ -58,6 +58,7 @@ const useMiddlewares = (app) => {
   // require('./tasks/movie')
   // require('./tasks/api')
   // require('./tasks/trailer')
+  // require('./tasks/alioss')
 
   const app = new Koa()
   app.use(async (ctx, next) => {
