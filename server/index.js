@@ -5,8 +5,8 @@ const cors = require('koa2-cors')
 const R = require('ramda')
 // const convert = require('koa-convert')
 const {join} = require('path')
-const {connect, initSchema} = require('./database/init')
-const MIDDLEWARES = ['router', 'parcel']
+const {connect, initSchema, initAdmin} = require('./database/init')
+const MIDDLEWARES = ['general', 'router', 'parcel']
 
 const useMiddlewares = (app) => {
   R.map(
@@ -54,6 +54,7 @@ const useMiddlewares = (app) => {
 ;(async () => {
   const aa = await connect()
   initSchema()
+  initAdmin()
 
   // require('./tasks/movie')
   // require('./tasks/api')
