@@ -31,6 +31,7 @@ const _request = (params = {}, fn = () => {}) => {
 
 export default (param) => {
   const typeRes = typeof param
+  console.log(param)
   if (typeRes === 'function') {
     param(true)
     return (obj) => _request(obj, param)

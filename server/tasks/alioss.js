@@ -49,10 +49,8 @@ co(function* () {
       {videoKey: ''}
     ]
   }).exec()
-  movies = [movies[0]]
-  console.log(movies)
-
   for (let i = 0; i < movies.length; i++) {
+    console.log('总资源数：' + movies.length, '当前个数：' + i)
     let movie = movies[i]
     if (movie.video && !movie.videoKey) {
       let poster = yield downImg(movie.poster, nanoid() + '.png')
@@ -70,12 +68,25 @@ co(function* () {
       var coverOss = yield client.putStream(cover, stream, {contentLength: size})
       console.log('上传cover成功')
 
-      var result = yield client.multipartUpload(video, resolve(__dirname, video), {
-        progress: function* (p) {
-          console.log('Progress: ' + p);
-        }
-      });
-      console.log('上传video成功')
+      try {
+        var result = yield client.multipartUpload(video, resolve(__dirname, video), {
+          progress: function* (p) {
+            console.log('Progress: ' + p)
+          }
+        })
+        console.log('上传video成功')
+      } catch (e) {
+        yield fs.unlink(resolve(__dirname, poster))
+        yield fs.unlink(resolve(__dirname, cover))
+        yield fs.unlink(resolve(__dirname, video))
+        yield client.deleteMulti([poster, cover], {
+          quiet: true
+        })
+        console.log('删除报错资源成功')
+        continue;
+      }
+
+      
   
       yield fs.unlink(resolve(__dirname, poster))
       yield fs.unlink(resolve(__dirname, cover))
@@ -89,6 +100,7 @@ co(function* () {
       yield movie.save()
     }
   }
+  console.log('上传资源到阿里oss成功')
 }).catch(function (err) {
   console.log(err)
 })

@@ -67,5 +67,5 @@ const useMiddlewares = (app) => {
   });
   await useMiddlewares(app)
 
-  app.listen(5566)
+  app.listen(8096)
 })()

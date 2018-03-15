@@ -23,6 +23,7 @@ export default class Content extends Component {
 
   _renderContent = () => {
     const { movies } = this.props
+    const base = 'http://static.huangzhh.com/'
     
     return (
       <div style={{ padding: '30px' }}>
@@ -43,7 +44,7 @@ export default class Content extends Component {
                       {it.rate} 分
                     </Badge>
                   ]}
-                  cover={<img alt="example" src={it.poster} />}>
+                  cover={<img alt="example" src={base + it.posterKey + '/koa_movie'} />}>
                   <Meta
                     style={{height: '202px', overflow: 'hidden'}}
                     title={<Link to={`/detail/${it._id}`}>{it.title}</Link>}

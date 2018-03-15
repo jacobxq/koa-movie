@@ -4,8 +4,8 @@ export default (loadComponent, placeholder = '拼命加载中...') => {
   return class AsyncComponent extends Component {
     unmount = false
 
-    constructor () {
-      super()
+    constructor (props) {
+      super(props)
       this.state = {
         Child: null
       }
