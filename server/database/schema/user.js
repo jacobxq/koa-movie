@@ -21,6 +21,10 @@ const UserSchema = new Schema({
     required: true,
     default: 0
   },
+  role: {
+    type: String,
+    default: 'user'
+  },
   lockUntil: Number,
   meta: {
     createdAt: {
